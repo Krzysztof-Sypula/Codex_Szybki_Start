@@ -10,6 +10,10 @@ known from Windows) with HTML, CSS, and JavaScript using Codex.
   or synchronize repositories unless explicitly requested by the user.
 
 - Write the tutorial in Polish unless the user requests another language.
+- Target experienced programmers and development-environment administrators.
+  Keep prose concise; favor commands, prerequisites, and acceptance checks.
+  Do not assume tools are installed: separate Linux and Windows setup, check
+  existing installations first, and link to official installation manuals.
 - Keep the tutorial source in Markdown and provide clear, reproducible steps.
 - Keep any example game code consistent with the tutorial.
 - When preparing the final document, export the Markdown to PDF; use ODT as an

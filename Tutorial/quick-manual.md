@@ -1,77 +1,228 @@
 ---
 title: "Saper z Codex"
-subtitle: "Od pierwszego promptu do plików gry"
+subtitle: "Środowisko, pierwszy prompt, iteracja"
 author: "NCAE_Saper"
-date: "22 listopada 2026 · Wersja 1.1"
+date: "22 listopada 2026 · Wersja 1.3"
 lang: pl-PL
 ---
 
 **Quick manual · HTML / CSS / JavaScript**
 
-Praktyczne ćwiczenie tworzenia prostej gry w przeglądarce z pomocą Codex.
-Nie wymaga frameworka ani instalowania zależności JavaScript.
-
-Pierwszy mierzalny cel: uzyskać trzy niepuste pliki gry, poprawnie połączone
-ze sobą. Pełne sprawdzenie działania gry jest osobnym etapem.
+Dla programistów i administratorów środowisk developerskich.
+Polecenia, prompty i kryteria odbioru; bez frameworków i zależności gry.
 
 # Spis treści
 
-- 1. Cel i przygotowanie
-- 2. Prompt tworzący grę
-- 3. Sprawdzenie wyniku
-- 4. Uruchomienie i poprawki
-- 5. Powtarzanie ćwiczenia i dokumentacja
-- 6. Druga iteracja: panel ustawień i minihelp
+- 1. Cel
+- 2. Przygotowanie środowiska
+- 3. Konfiguracja projektu
+- 4. Pierwsze uruchomienie i utworzenie gry
+- 5. Drugi prompt: utworzenie testu
+- 6. Odbiór wersji zero
+- 7. Trzeci prompt: rozbudowa gry
 
-Spis przedstawia kolejność rozdziałów; nie zawiera numerów stron.
+# 1. Cel
 
-# 1. Cel i przygotowanie
+Utwórz Sapera w trzech plikach: `index.html`, `style.css`, `script.js`.
+Pierwsza iteracja: 9 × 9, 10 min, bezpieczne pierwsze odkrycie, flagi,
+odkrywanie pustych obszarów, wygrana/przegrana i restart.
+Druga iteracja: konfigurowalna plansza, kolory, dźwięki i minihelp.
 
-## Co tworzymy?
+Minimalny odbiór: trzy niepuste pliki i poprawne odwołania CSS/JS.
+Odbiór funkcjonalny wymaga osobnej próby w przeglądarce.
 
-Saper to gra logiczna, w której odkrywasz pola bez min. Liczba na odkrytym
-polu mówi, ile min znajduje się w ośmiu sąsiednich polach. Flagi pomagają
-oznaczać podejrzane miejsca. Wygrywasz po odkryciu wszystkich pól bez min.
+# 2. Przygotowanie środowiska
 
-Zakres pierwszej wersji: plansza 9 × 9, dziesięć min, bezpieczne pierwsze
-odkrycie, flagi, automatyczne odkrywanie pustego obszaru i przycisk nowej gry.
+## Zakres
 
-## Wymagania
+Potrzebujesz terminala, przeglądarki, Codex CLI i konta z dostępem do Codex.
+Python 3 służy do uruchomienia testu plików. Node.js z npm
+jest potrzebny przy wybranej poniżej instalacji Codex przez npm oraz do
+kontroli JavaScript.
 
-Przygotuj dostęp do działającego Codex, terminal Bash, Python 3 i przeglądarkę.
-Poradnik zakłada, że Codex jest już skonfigurowany i może zapisywać pliki
-w katalogu projektu. Nie opisuje instalacji ani logowania.
-Node.js jest opcjonalny: posłuży jedynie do sprawdzenia składni JavaScript.
+Zaczynasz w pustym katalogu. Wszystkie pliki gry i testu powstaną w ćwiczeniu.
 
-## Przygotuj katalog
+## Linux — Bash
 
-W terminalu przejdź do katalogu głównego tego projektu. Wykonaj:
+Sprawdź stan; brak polecenia oznacza brak instalacji lub wpisu w PATH:
 
 ```bash
-mkdir -p Test/game
+command -v python3 node npm codex
+python3 --version
+node --version
+npm --version
+codex --version
 ```
 
-W tym ćwiczeniu ścieżki są względne wobec katalogu głównego projektu.
-Codex powinien pracować w tym samym katalogu. Przed próbą sprawdź zawartość
-`Test/game`: jeśli są tam Twoje wcześniejsze pliki, zachowaj ich kopię
-lub wybierz inny katalog i odpowiednio zmień prompt.
+Zainstaluj tylko braki:
 
-Docelowa struktura:
+- Python: pakiet `python3` swojej dystrybucji. Debian/Ubuntu:
+  `sudo apt update`, potem `sudo apt install python3`.
+  Pozostałe warianty: [Python na Unix/Linux](https://docs.python.org/3/using/unix.html).
+- Node.js i npm: wybierz wspieraną wersję LTS i instrukcję Linux na
+  [oficjalnej stronie Node.js](https://nodejs.org/en/download).
+- Codex: po uruchomieniu npm wykonaj `npm install -g @openai/codex`.
+  Alternatywne instalatory: [OpenAI — Codex CLI](https://developers.openai.com/codex/cli).
+  Przy błędzie uprawnień użyj instalacji Node/npm w katalogu użytkownika.
+
+Ponów kontrolę wersji.
+
+## Windows — PowerShell
+
+Sprawdź polecenia i wersje:
+
+```powershell
+Get-Command py, python, node, npm.cmd, codex.cmd -ErrorAction SilentlyContinue
+py -3 --version
+node --version
+npm.cmd --version
+codex.cmd --version
+```
+
+Jeśli `py` nie istnieje, sprawdź `python --version`. Działający Python 3
+może zastąpić `py -3` w dalszych poleceniach. Sam alias otwierający sklep
+nie oznacza zainstalowanego interpretera.
+
+Zainstaluj tylko braki:
+
+- Python: [oficjalny Python Install Manager i instrukcja Windows](https://docs.python.org/3/using/windows.html).
+  Pobierz go z python.org; po instalacji sprawdź dostępność interpretera.
+- Node.js z npm: instalator Windows LTS ze
+  [strony Node.js](https://nodejs.org/en/download).
+- Otwórz nowy terminal, aby wczytać PATH. Codex:
+  `npm.cmd install -g @openai/codex`.
+  Szczegóły: [OpenAI — Codex CLI](https://developers.openai.com/codex/cli)
+  i [środowisko Windows](https://developers.openai.com/codex/windows).
+
+Użycie `.cmd` wybiera wrapper zamiast skryptu `.ps1`; nie wymaga zmiany
+polityki wykonywania PowerShell. Ponów kontrolę wersji.
+
+WSL jest opcją: w nim wykonuj całą ścieżkę Linux, łącznie z instalacją
+narzędzi i logowaniem. Nie mieszaj jej z instalacją Windows.
+
+## Pusty katalog projektu
+
+Wybierz katalog nadrzędny i utwórz nowy projekt `Saper`.
+
+Linux (Bash):
+
+```bash
+mkdir Saper
+cd Saper
+mkdir -p .codex Test/game
+```
+
+Windows (PowerShell):
+
+```powershell
+New-Item -ItemType Directory Saper
+Set-Location Saper
+New-Item -ItemType Directory .codex, Test/game
+```
+
+Od tej chwili wszystkie ścieżki są względne wobec `Saper`.
+`Test/game` to przyjęta nazwa katalogu gry, nie plik dostarczany z manualem.
+
+## Opcjonalnie: repozytorium Git
+
+Sprawdź `git --version`. Jeśli brakuje Git, użyj
+[oficjalnej instrukcji instalacji](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+W katalogu `Saper` wykonaj `git init`. Commituj samodzielnie:
+konfigurację, odebraną wersję zero z testem i przetestowaną rozbudowę.
+Jeśli Git poprosi o tożsamość autora, ustaw `user.name` i `user.email`
+zgodnie ze swoją konfiguracją. Nie dodawaj poświadczeń ani kluczy API.
+
+# 3. Konfiguracja projektu
+
+## `.codex/config.toml` — ustawienia CLI
+
+Utwórz plik w edytorze. Ścieżka zaczyna się od `.codex`, nie `/codex`.
+Wklej:
+
+```toml
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+```
+
+Pierwszy wpis pozwala agentowi poprosić o zgodę na operację, drugi ogranicza
+zapis do obszaru pracy z wyjątkami chronionych ścieżek. Model wybierzesz
+w CLI. Lokalna konfiguracja jest ładowana dla zaufanych projektów;
+ustawienia organizacji mogą ją ograniczać, a parametry CLI nadpisywać.
+Źródło: [OpenAI — konfiguracja](https://developers.openai.com/codex/config-basic).
+
+## `AGENTS.md` — zasady tworzenia gry
+
+W katalogu głównym `Saper` utwórz plik o dokładnie tej nazwie i wklej:
+
+```markdown
+# Projekt Saper
+
+- Twórz grę przeglądarkową w HTML, CSS i JavaScript w Test/game.
+- Używaj lokalnych plików index.html, style.css i script.js.
+- Bez frameworków, CDN i zewnętrznych zależności gry.
+- Gra ma działać po otwarciu index.html w przeglądarce.
+- Pisz komunikaty gry i odpowiedzi po polsku, zwięźle.
+- Zachowuj działające funkcje przy kolejnych zmianach.
+- Test plików w Pythonie utwórz w tests/check_game_files.py,
+  gdy użytkownik zleci jego przygotowanie.
+- Sprawdzaj zmiany; odróżniaj wykonane testy od proponowanych.
+- Nie wykonuj poleceń Git; repozytorium obsługuje użytkownik.
+```
+
+Codex czyta instrukcje `AGENTS.md` przed pracą; mogą obowiązywać także
+instrukcje nadrzędne. Plik opisuje zadanie, nie przyznaje uprawnień systemowych.
+Źródło: [OpenAI — AGENTS.md](https://developers.openai.com/codex/guides/agents-md).
+
+Jeśli używasz Git, opcjonalnie zapisz konfigurację:
+
+```bash
+git add .codex/config.toml AGENTS.md
+git commit -m "Konfiguracja projektu Saper"
+```
+
+# 4. Pierwsze uruchomienie i utworzenie gry
+
+## Start krok po kroku
+
+1. Otwórz terminal w `Saper`. Sprawdź ścieżkę: `pwd` (Linux) lub
+   `Get-Location` (PowerShell).
+2. Uruchom `codex login status` (Windows: `codex.cmd login status`).
+   Jeśli brak logowania, wykonaj `codex login` / `codex.cmd login`
+   i dokończ uwierzytelnienie w przeglądarce zgodnie z komunikatami.
+3. Uruchom `codex` (Windows: `codex.cmd`). Przy pierwszym uruchomieniu
+   może pojawić się konfiguracja konta, pytanie o zaufanie do katalogu
+   lub konfiguracja sandboxa Windows. Potwierdź własny katalog `Saper`;
+   komunikat instalacji sandboxa dotyczy środowiska wykonywania poleceń.
+   Jeśli konfiguracja Windows nie powiedzie się, skorzystaj z
+   [instrukcji OpenAI](https://developers.openai.com/codex/windows).
+4. W polu rozmowy wpisz `/status`. Sprawdź model, katalog/obszar zapisu
+   i politykę zatwierdzania. Jeśli projekt nie jest zaufany, lokalna
+   konfiguracja może zostać pominięta; rozwiąż to przed generowaniem gry.
+5. Wpisz `/model`, wybierz dostępny na Twoim koncie model i zatwierdź.
+   Sprawdź wybór ponownie przez `/status`. Nie musisz wpisywać nazwy
+   modelu do konfiguracji projektu.
+6. Wklej pierwszy prompt poniżej. Poczekaj na końcowe podsumowanie.
+   Jeśli CLI poprosi o zgodę, przeczytaj polecenie i zakres działania;
+   zatwierdź operację potrzebną do zadania.
+
+Poniżej schemat oczekiwanych informacji, nie dosłowny zapis ekranu.
+Nazwy, kolejność i treść komunikatów zależą od wersji oraz ustawień:
 
 ```text
-Test/
-  game/
-    index.html
-    style.css
-    script.js
+Uruchomienie → logowanie lub aktywne konto
+Zaufanie do katalogu → sprawdź ścieżkę Saper
+/status → model, polityka zgód, obszary zapisu, użycie kontekstu
+/model → lista modeli dostępnych dla konta
+Prompt → postęp pracy, ewentualne zgody, podsumowanie zmian
 ```
 
-# 2. Prompt tworzący grę
+Polecenia z `/` wpisujesz w rozmowie Codex, nie w Bash/PowerShell.
+Wpisanie samego `/` pokazuje dostępne komendy. `/quit` kończy CLI;
+`codex resume --last` (Windows: `codex.cmd resume --last`) wznawia
+ostatnią rozmowę. Komendy opisuje
+[oficjalna dokumentacja CLI](https://developers.openai.com/codex/cli/slash-commands).
 
-## Przekaż zadanie agentowi
-
-W działającej sesji Codex wklej cały poniższy prompt. Poproś o utworzenie
-plików, nie tylko wyświetlenie kodu w odpowiedzi.
+## Prompt 1 — gra
 
 ```text
 Utwórz w Test/game prostą grę Saper w HTML, CSS i JavaScript.
@@ -97,147 +248,94 @@ Jeżeli dostępny jest Node.js, sprawdź składnię script.js.
 Na końcu podaj ścieżki i wyniki faktycznie wykonanych kontroli.
 ```
 
-## Dlaczego tak szczegółowo?
+Po zakończeniu oczekuj plików `Test/game/index.html`, `style.css`
+i `script.js` oraz listy faktycznie wykonanych kontroli.
+Sam komunikat o sukcesie nie zastępuje sprawdzenia plików.
 
-Ścieżka określa miejsce zapisu. Lista funkcji ustala granice zadania.
-Wymóg kontroli plików odróżnia gotowy artefakt od samego opisu rozwiązania.
-Nie zakładaj, że odpowiedź „gotowe” oznacza, iż gra została przetestowana
-w przeglądarce: sprawdź, jakie kontrole agent rzeczywiście wykonał.
+# 5. Drugi prompt: utworzenie testu
 
-# 3. Sprawdzenie wyniku
+## Prompt 2 — test plików
 
-## Minimalne kryterium sukcesu
-
-W terminalu, nadal w katalogu głównym projektu, wykonaj:
-
-```bash
-python3 - <<'PY'
-from pathlib import Path
-from html.parser import HTMLParser
-
-root = Path('Test/game')
-for name in ('index.html', 'style.css', 'script.js'):
-    path = root / name
-    assert path.is_file(), f'Brak pliku: {path}'
-    assert path.stat().st_size > 0, f'Pusty plik: {path}'
-    print(f'OK: {path}')
-
-class Links(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.css = False
-        self.js = False
-
-    def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-        if tag == 'link':
-            self.css |= (attrs.get('href') == 'style.css'
-                         and attrs.get('rel') == 'stylesheet')
-        if tag == 'script':
-            self.js |= attrs.get('src') == 'script.js'
-
-links = Links()
-links.feed((root / 'index.html').read_text(encoding='utf-8'))
-assert links.css and links.js, 'Brak lokalnych odwolan CSS/JS'
-print('SUKCES: trzy pliki i poprawne odwolania CSS/JS')
-PY
-```
-
-Jeśli zobaczysz trzy wiersze `OK` i wiersz `SUKCES`, minimalny cel ćwiczenia
-został osiągnięty. Błąd `AssertionError` wskazuje brakujący element.
-Ta kontrola nie potwierdza jeszcze poprawności logiki gry.
-
-Opcjonalnie, jeżeli masz Node.js:
-
-```bash
-node --check Test/game/script.js
-```
-
-Brak komunikatów i kod zakończenia 0 oznaczają poprawną składnię.
-To nadal nie jest test zachowania w przeglądarce.
-
-# 4. Uruchomienie i poprawki
-
-## Sprawdzenie ręczne
-
-Otwórz `Test/game/index.html` w przeglądarce. Nie musisz uruchamiać serwera.
-Wykonaj następujące czynności:
-
-1. Sprawdź, czy widać 81 pól i przycisk „Nowa gra”.
-2. Odkryj pierwsze pole. Nie powinno zawierać miny.
-3. Oznacz zakryte pole prawym przyciskiem myszy. Ponowne kliknięcie usuwa flagę.
-4. Włącz tryb flagowania i sprawdź flagę zwykłym kliknięciem lub dotykiem.
-5. Wyłącz tryb flagowania. Odkrycie pustego pola powinno odsłonić jego obszar.
-6. Po trafieniu miny sprawdź komunikat i blokadę dalszego odkrywania.
-7. Kliknij „Nowa gra”: pola, flagi i komunikat powinny zostać zresetowane.
-8. Zwęź okno do szerokości telefonu i sprawdź, czy plansza mieści się na ekranie.
-
-Wygrana wymaga odkrycia wszystkich pól bez min; samo ustawienie flag
-nie powinno kończyć gry. To osobny scenariusz do sprawdzenia.
-
-## Gdy nie powstaną pliki
-
-Przekaż Codex wynik kontroli i konkretne oczekiwanie, na przykład:
+W tej samej rozmowie przekaż kolejne zadanie. Skrypt jeszcze nie istnieje:
+teraz ma go utworzyć Codex.
 
 ```text
-Kontrola z rozdziału 3 zgłasza: Brak pliku: Test/game/script.js.
-Sprawdź katalog roboczy i przyczynę braku. Utwórz brakujący plik,
-nie usuwaj poprawnych plików. Powtórz kontrolę z rozdziału 3
-oraz podaj jej wynik. Nie ograniczaj odpowiedzi do fragmentu kodu.
+Utwórz tests/check_game_files.py w Pythonie 3, bez dodatkowych bibliotek.
+Nie zmieniaj gry. Test ma działać na Linux i Windows, niezależnie
+od bieżącego katalogu: ustal katalog projektu względem __file__.
+Sprawdź, czy Test/game/index.html, style.css i script.js istnieją
+oraz są niepuste. Użyj html.parser do sprawdzenia, czy HTML ładuje
+style.css jako arkusz stylów i script.js jako skrypt (dopuść ./).
+Przy sukcesie wypisz OK dla plików i SUKCES; zakończ kodem 0.
+Przy błędzie wypisz czytelny komunikat i zakończ kodem różnym od 0.
+Nie używaj assert do kontroli wejścia. Utwórz katalog tests, jeśli nie ma.
+Uruchom test i podaj wynik. Sprawdź też, na tymczasowych kopiach,
+czy wykrywa brak pliku, pusty plik i błędne odwołanie w HTML.
+Nie usuwaj ani nie uszkadzaj właściwych plików gry podczas testowania.
 ```
 
-W razie błędnego zachowania opisz kroki, wynik i oczekiwanie, np.:
-„Po postawieniu flagi lewym kliknięciem nadal odkrywam to pole.
-Oczekuję blokady odkrywania do czasu usunięcia flagi”.
+## Uruchomienie przez czytelnika
 
-W tej próbie dopuszczamy dwie iteracje naprawcze po pierwszej próbie.
-Po każdej powtórz kontrolę. Jeśli nadal nie ma sukcesu, zapisz błąd,
-sprawdzone przyczyny i ograniczenie środowiska; nie deklaruj ukończenia.
+Otwórz drugi terminal w `Saper` albo zakończ CLI przez `/quit`.
+Sprawdź obecność nowego pliku, następnie uruchom:
 
-# 5. Powtarzanie ćwiczenia i dokumentacja
+Linux: `python3 tests/check_game_files.py`.
+Windows: `py -3 tests/check_game_files.py`.
 
-## Co zachować?
+Oczekiwany wynik zgodny z wymaganiami promptu:
 
-Zachowaj prompt, pliki oraz wynik kontroli. Kolejne uruchomienie modelu może
-wygenerować inną implementację: powtarzalne są wymagania i kryteria odbioru,
-a nie identyczna treść kodu.
+```text
+OK: Test/game/index.html
+OK: Test/game/style.css
+OK: Test/game/script.js
+SUKCES
+```
 
-W tym projekcie `Test/game` jest wynikiem próby poradnika. Katalog `source`
-zawiera kod generatora dokumentacji, a `Tutorial` jej źródło i eksporty.
-Nie uruchamiaj kolejnej próby nad własnymi zmianami bez ich zachowania.
+Sprawdź też `node --check Test/game/script.js`: kod zakończenia 0 oznacza
+poprawną składnię. Test plików i składni nie sprawdza zachowania gry.
+Jeśli pliku testu brakuje, wróć do Codex i poproś o zapisanie go,
+przekazując komunikat błędu. Nie przechodź dalej z niewykonaną kontrolą.
 
-## Aktualizacja poradnika
+# 6. Odbiór wersji zero
 
-Edytuj `Tutorial/quick-manual.md`, a potem w katalogu projektu wykonaj:
+Otwórz `Test/game/index.html` w przeglądarce. Sprawdź:
+
+- planszę 9 × 9 i bezpieczne pierwsze odkrycie;
+- flagę prawym przyciskiem oraz tryb flagowania dla dotyku;
+- blokadę odkrywania oflagowanego pola i odkrywanie pustych obszarów;
+- przegraną po trafieniu miny, wygraną po odkryciu pól bez min;
+- blokadę ruchów po końcu gry oraz reset przyciskiem „Nowa gra”;
+- układ na małym ekranie.
+
+Przy błędzie podaj Codex kroki odtworzenia, wynik i oczekiwanie:
+
+```text
+Po postawieniu flagi zwykłe kliknięcie nadal odkrywa pole.
+Zablokuj odkrywanie oflagowanego pola. Zachowaj możliwość usunięcia
+flagi. Sprawdź zmianę i ponownie uruchom test plików.
+```
+
+Wykonaj do dwóch iteracji naprawczych i powtarzaj kontrolę po każdej.
+Jeśli problem zostaje, zapisz błąd i jego przyczynę zamiast uznawać odbiór.
+
+Po udanym teście i próbie ręcznej zapisz działającą wersję zero.
+Jeśli używasz Git (zalecane):
 
 ```bash
-python3 source/build_tutorial.py
+git add Test/game tests/check_game_files.py
+git commit -m "Saper: dzialajaca wersja zero i test plikow"
 ```
 
-Generator wymaga Pythona 3, Pandoc, XeLaTeX oraz fontów DejaVu Serif
-i DejaVu Sans Mono. Tworzy `Tutorial/quick-manual.odt` oraz
-`Tutorial/quick-manual.pdf`. ODT i PDF powstają z tego samego Markdown,
-ale ich paginacja może się różnić.
+Bez Git zachowaj kopię katalogu projektu przed dalszą rozbudową.
 
-Raport rzeczywistego wykonania ćwiczenia znajduje się w
-`Tutorial/test-report.md`. Oddziela sprawdzone wyniki od kontroli,
-których jeszcze nie wykonano.
+# 7. Trzeci prompt: rozbudowa gry
 
-# 6. Druga iteracja: panel ustawień i minihelp
+Obejrzyj działającą grę. Załóżmy, że chcesz teraz zmieniać rozmiar planszy,
+liczbę min i kolory oraz mieć pod ręką minihelp i przełącznik dźwięku.
+Doprecyzuj wymagania w kolejnym prompcie. Przyjmijmy bok 2–30 pól
+oraz preset min 10/81 pól; to nasza reguła, nie uniwersalny standard Sapera.
 
-## Od działającej wersji do wygodniejszej gry
-
-Po pierwszej próbie mamy działającą grę. Kolejny prompt rozwija jej interfejs
-na podstawie doświadczeń użytkownika. Nie zastępuje pierwszego promptu
-z rozdziału 2: należy go wykonać dopiero na istniejących plikach gry.
-
-W tej iteracji użytkownik poprosił o panel po lewej stronie, ustawienia
-kwadratowej planszy i liczby min, kolory, opcjonalne dźwięki oraz minihelp.
-Zakres 2–30 pól na bok to przyjęte ograniczenie tej implementacji.
-„Standardowa” oznacza nasz preset około 12,3% pól (10/81), a nie uniwersalny
-wzór obowiązujący we wszystkich odmianach Sapera.
-
-## Drugi prompt do gry
+## Prompt 3 — druga iteracja gry
 
 ```text
 Rozbuduj istniejącą grę w Test/game. Zachowaj działającą logikę
@@ -274,11 +372,11 @@ Sprawdź przypadki graniczne i podaj zakres wykonanych testów.
 6. Włącz dźwięk dużym przyciskiem, zmień głośność, wykonaj ruch i wycisz.
 7. Na telefonie sprawdź flagowanie i przewijanie większej planszy.
 
-Do powtarzalnej kontroli logiki tej implementacji służy:
+
+Ponownie uruchom test z rozdziału 5 i kontrolę składni JavaScript.
+Po udanej kontroli ręcznej opcjonalnie zapisz kolejną wersję:
 
 ```bash
-node Test/check-game.cjs
+git add Test/game
+git commit -m "Saper: ustawienia, minihelp i dzwiek"
 ```
-
-Ten test symuluje elementy strony. Nie zastępuje sprawdzenia wyglądu,
-natywnej walidacji formularza i odsłuchu w prawdziwej przeglądarce.

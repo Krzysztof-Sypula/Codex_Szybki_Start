@@ -167,4 +167,90 @@ Przede wszystkim chciałbym mieć:
 
 Do tego w samej tworzonej dokumentacji - dopisz rozdział, w którym to co piszę jest wŁaśnie "poprawką po pierwszej iteracji, czyli drugim promptem do gry "poprawiającym to, co powstało po pierewszym prompcie". Nie modyfikuj pierwszego, ta poprawka to następny rozdział instrukcji.
 ```
-**Czas wykonania:** 146,82 s (11:14:47–11:17:14, Europe/London; pomiar do zapisu historii, do uzupełnienia po zakończeniu tury).
+**Czas wykonania:** 155,35 s (11:14:47–11:17:22, Europe/London; odtworzono z dziennika sesji).
+
+### 18. Skrócenie manuala i przygotowanie Linux/Windows
+
+```text
+Teraz poprawimy manual.
+Rozbij rozdział "Cel i przygotowanie" na dwa.
+Nie zakładaj, że user ma skonfigurowane środowisko.
+Potraktuj osobno instalację i przygotowanie środowiska na Linux i na Windows.
+Podaj instrukcje sprawdzające aktualne środowisko, czy może coś już jest zainstalwoane.
+Jak nie ma - jak zainstalować.
+Możesz, tam gdzie to skróci dłuższa isntrukcję, odsyłać do osobnych oficjalnych manuali, np. manuala instalacji codex cli na stronach OpenAI,
+czy instalacji Python na stroinach ofichjalnych Python.
+
+Taka jeszcze uwaga. W pośpiechu nie przeczytałem isntrucji, ale wydaje mi się za bardzo rozgadana.
+Odbiorcami sa doświadczeni informatycy znający się na programowaniu i konfiguracji środowisk programistycznych.
+```
+**Czas wykonania:** 102,33 s (11:32:29–11:34:12, Europe/London; odtworzono z dziennika sesji).
+
+### 19. Samodzielny manual od pustego katalogu
+
+```text
+Cd Poprawiania manuala.
+przeczytałem, przetestowałem i to są moje uwagi:
+
+----
+To:
+	Opcjonalnie: eksport tego manuala
+jest niepotrzebne, czytelnik nie tworzy manuala, tylko go czyta i tworzy na jego podstawie grę Saper w Codex CLI.
+
+----
+Brakuje mi po przygotowaniu środowiska rozdziału o tworzeniu plików /codex/config.toml i AGENTS.md.
+Dodaj rozdział, przygotuj zawartość gotową do wklejenia do plików (na poitrzeby tworzenia gry Saper, nie na potrzeby tworzenia manuala!),
+opisz ich cel i podaj odnośniki do ich dokumentacji.
+
+----
+Rozdział trzy zaczyna się:
+
+"W sesji uruchomionej w katalogu projektu podaj:..."
+Nie podoba mi się to, podaj instrukcję krok po kroku i wklej, czego można sę spodziewać,
+zwłaszcza przy pierwszym uruchomieniu.
+Wyjasnij komunikaty, napisz kilka instrukcji, np /status i /model (te dwie na pewno).
+
+----
+Rozdział 4, to:
+
+Minimalne kryterium sukcesu
+W terminalu, nadal w katalogu głównym projektu, wykonaj:
+Linux: python3 source/check_game_files.py.
+
+Tego pliku nie ma ani nie powsdtał, Instrukcja zakłada, że użytkownik startujke w pustym katalogu i tworzy grę.
+Dlatego albo rezygnacja z testów automatycznych i tylko user-test
+albo plik source/check_game_files.py musiałby zostaćutworzony przez Codexa i wtedy pewnie potrzebna jest albo modyfikacja pierwszego prompta,
+albo lepiej - dodanie drugiego prompta z utworzeniem testu (tak wolę).
+
+----
+Rozdział 6,Co zachować?
+
+To:
+"Zachowaj prompt, pliki oraz wynik kontroli. Kolejne uruchomienie modelu może
+wygenerować inną implementację: powtarzalne są wymagania i kryteria odbioru, a
+nie identyczna treść kodu.
+W tym projekcie Test/game jest wynikiem próby poradnika. Katalog source zawiera
+kod generatora dokumentacji, a Tutorial jej źródło i eksporty. Nie uruchamiaj
+kolejnej próby nad własnymi zmianami bez ich zachowania.:"
+wygląda na "wyjęcie z kontekstu" tworzenia tutoriala.
+Natomiast być może uwagi o zachowywaniu promptów i plików są słuszne,
+ale do tego może lepiej w rozdziale o przygotowaniu środowiska zasugerowac utworzenie repo git (jako opcjonalne, potem wskazuje też które stany warto commit'ować),
+i wtedy zamiast tej uwagi byłoby "jeżeli chcesz (sugerowane) - utwórz commit projektu, zapiszesz stan działającej wersjo ""zero""".
+
+
+----
+Aktualizacja poradnika...
+
+To oczywiście bez sensu w tutorialu chyba. Wyciąć.
+
+----
+"W tej iteracji użytkownik poprosił o panel po lewej stronie, ustawienia kwadratowej
+planszy i liczby min, kolory, opcjonalne dźwięki oraz minihelp. Zakres 2–30 pól na bok
+to przyjęte ograniczenie tej implementacji. „Standardowa” oznacza nasz preset około
+12,3% pól (10/81), a nie uniwersalny wzór obowiązujący we wszystkich odmianach
+Sapera."
+
+No nie pisz tak, wczuj się w autora poradnika i czytającego.
+Niech czytający myśli, że obejrzał grę i sam chce tych poprawek (jakby sugeruj mu takie myslenie: :założmy że chcemy poprawić naszą grę...").
+```
+**Czas wykonania:** 109,54 s (12:15:28–12:17:17, Europe/London; pomiar do zapisu historii, do uzupełnienia po zakończeniu tury).
