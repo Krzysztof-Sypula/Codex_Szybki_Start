@@ -1,0 +1,14 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+# Intended destination: .codex/config.toml
+# Project instructions live in AGENTS.md at the repository root.
+
+model_reasoning_effort = "medium"
+model_reasoning_summary = "auto"
+model_verbosity = "medium"
+
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+web_search = "cached"
+
+[sandbox_workspace_write]
+network_access = true

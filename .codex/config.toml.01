@@ -1,0 +1,54 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+################################################################################
+# SaperExample  — project for creating "short instruction", how to create "saper" game (known from Windows) using codex
+# Place this file as: <repo_root>/.codex/config.toml
+#
+# Target: html/css/javascript
+# 
+################################################################################
+
+# Core model selection
+# model = "gpt-5.4-codex"
+
+
+# Reasoning / verbosity (keep outputs practical for large codebase work)
+model_reasoning_effort = "medium"
+model_reasoning_summary = "auto"
+model_verbosity = "medium"
+
+# Safety / execution policy
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+
+# Web search tool (Codex internal search): cached index by default
+web_search = "cached"
+
+# Allow writing only inside the workspace; allow network for Gradle wrapper/dependencies
+[sandbox_workspace_write]
+writable_roots = ["/home/adam/CodexProjects/NCAE_Saper", "/tmp"]
+network_access = true
+
+# Optional: add project-specific instructions injected before AGENTS.md
+developer_instructions = """
+The task is to write "quick manual", or "how to" that describes how to create program "Saper" (known from Windows) in technology html/css/javascript.
+You will probably have to use Python to create .md (markdown) files,
+and the using proper library change it to ODT file, and finaly to pdf (pr directly from md to pdf) 
+"""
+
+# Optional: ensure shell commands are allowed but still governed by approval_policy/sandbox
+[features]
+shell_tool = true
+exec_policy = true
+
+# Optional: per-project trust mapping (fill in your absolute repo path if you want)
+[projects]
+[projects."/home/adam/CodexProjects/NCAE_Saper"]
+trust_level = "trusted"
+
+
+###############################################################################
+# Project command shortcuts — Linux (bash)
+###############################################################################
+[commands]
+
