@@ -140,4 +140,31 @@ jeżeli sukcesu nie ma, to poszukaj powodu i powtórz działania by usunąć, pr
 ```text
 Co to jest tryb flagowania w Saper?
 ```
-**Czas wykonania:** 19,36 s (11:03:43–11:04:03, Europe/London; pomiar do zapisu historii, do uzupełnienia po zakończeniu tury).
+**Czas wykonania:** 30,19 s (11:03:43–11:04:13, Europe/London; odtworzono z dziennika sesji).
+
+### 16. Obsługa Git po stronie użytkownika
+
+```text
+Dopisz sobie do konfiguracji, że nie obsługujesz git'a, ja go obsługuję (decyduję, kiedy i jak robić commit).
+```
+**Czas wykonania:** 20,54 s (11:12:39–11:13:00, Europe/London; odtworzono z dziennika sesji).
+
+### 17. Druga iteracja gry: panel ustawień i minihelp
+
+```text
+Efekt (gra) jest niezły, natomiast podręcznik będziemy jeszcze poprawiać.
+Teraz skupimy się na samej grze, pierwsza wersja niezła i działa ale chcę paru poprawek, modyfikacji.
+Dorób mi po lewej panel z ustawieniami gry, minihelpem do gry itd.
+Przede wszystkim chciałbym mieć:
+*	
+	Ustawienia wielkości planszy/liczby min. Ma być zawsze tylko kwadrat. Liczba min od zero do (liczba pól/2).
+	Do tego przycisk "standardowa" (nie wiem ale pewnie jest jakiś wzór na standardową liczbę min w zależności od liczby pól).
+*	
+	Jakiś panel z ustawieniami kolorów, może dźwięków. Jeśli dżwięków to także duży przycisk na "głównym ekranie" włączający/wyłączający.
+*
+	Minihelp gry
+	
+
+Do tego w samej tworzonej dokumentacji - dopisz rozdział, w którym to co piszę jest wŁaśnie "poprawką po pierwszej iteracji, czyli drugim promptem do gry "poprawiającym to, co powstało po pierewszym prompcie". Nie modyfikuj pierwszego, ta poprawka to następny rozdział instrukcji.
+```
+**Czas wykonania:** 146,82 s (11:14:47–11:17:14, Europe/London; pomiar do zapisu historii, do uzupełnienia po zakończeniu tury).

@@ -1,6 +1,6 @@
 'use strict';
-const size = 9;
-const mineCount = 10;
+let size = 9;
+let mineCount = 10;
 const board = document.querySelector('#board');
 const status = document.querySelector('#status');
 const flagButton = document.querySelector('#flag-mode');
@@ -45,6 +45,7 @@ function render(message) {
 function toggleFlag(index) {
   if (ended || cells[index].open) return;
   cells[index].flag = !cells[index].flag;
+  playSound(450);
   render();
 }
 
@@ -54,6 +55,7 @@ function reveal(index) {
   if (cells[index].mine) {
     cells[index].open = true;
     ended = true;
+    playSound(120, 0.3);
     render('Przegrana. Trafiona mina. Spróbuj nowej gry.');
     return;
   }
@@ -66,12 +68,15 @@ function reveal(index) {
   }
   if (cells.filter(c => c.open).length === size * size - mineCount) {
     ended = true;
+    playSound(880, 0.3);
     render('Wygrana! Wszystkie bezpieczne pola odkryte.');
-  } else render();
+  } else { playSound(600); render(); }
 }
 
 function reset() {
   started = ended = flagMode = false;
+  board.style.setProperty('--size', size);
+  document.querySelector('#summary').textContent = `${size} × ${size} pól · ${mineCount} min. Jeden spokojny ruch naraz.`;
   board.replaceChildren();
   cells = Array.from({ length: size * size }, (_, i) => {
     const button = document.createElement('button');
@@ -88,5 +93,71 @@ flagButton.addEventListener('click', () => {
   if (ended) return;
   flagMode = !flagMode;
   render();
+});
+const sizeInput = document.querySelector('#size');
+const minesInput = document.querySelector('#mines');
+function updateLimit() {
+  const proposed = Number(sizeInput.value);
+  if (!Number.isInteger(proposed) || proposed < 2 || proposed > 30) return;
+  const max = Math.floor(proposed * proposed / 2);
+  minesInput.max = max;
+  if (Number(minesInput.value) > max) minesInput.value = max;
+  document.querySelector('#mine-limit').textContent = `Od 0 do ${max} min (${proposed * proposed} pól).`;
+}
+sizeInput.addEventListener('input', updateLimit);
+document.querySelector('#standard').addEventListener('click', () => {
+  if (!sizeInput.reportValidity()) return;
+  updateLimit();
+  minesInput.value = Math.round(Number(sizeInput.value) ** 2 * 10 / 81);
+});
+document.querySelector('#settings').addEventListener('submit', event => {
+  event.preventDefault();
+  if (!event.currentTarget.reportValidity()) return;
+  size = Number(sizeInput.value);
+  mineCount = Number(minesInput.value);
+  reset();
+});
+document.querySelector('#theme').addEventListener('change', event => {
+  document.body.dataset.theme = event.target.value;
+});
+let audioContext;
+let soundEnabled = false;
+const soundButton = document.querySelector('#sound');
+function playSound(frequency, duration = 0.08) {
+  if (!soundEnabled || !audioContext || audioContext.state !== 'running') return;
+  const volume = Number(document.querySelector('#volume').value) / 100;
+  if (!volume) return;
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  oscillator.frequency.value = frequency;
+  gain.gain.setValueAtTime(volume * 0.15, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + duration);
+  oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
+}
+soundButton.addEventListener('click', async () => {
+  soundButton.disabled = true;
+  try {
+    if (!soundEnabled) {
+      const Audio = window.AudioContext || window.webkitAudioContext;
+      if (!Audio) throw new Error('Audio unavailable');
+      audioContext ||= new Audio();
+      await audioContext.resume();
+      soundEnabled = true;
+    } else {
+      soundEnabled = false;
+      await audioContext.suspend();
+    }
+    soundButton.setAttribute('aria-pressed', String(soundEnabled));
+    soundButton.textContent = `Dźwięk: ${soundEnabled ? 'włączony' : 'wyłączony'}`;
+    playSound(700);
+  } catch {
+    soundEnabled = false;
+    soundButton.setAttribute('aria-pressed', 'false');
+    soundButton.textContent = 'Dźwięk niedostępny — spróbuj ponownie';
+  } finally { soundButton.disabled = false; }
 });
 reset();

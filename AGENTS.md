@@ -5,6 +5,10 @@ known from Windows) with HTML, CSS, and JavaScript using Codex.
 
 # Deliverables and workflow
 
+- The user manages Git and decides when and how to commit. Do not run Git
+  commands (including status/diff), stage files, commit, manage branches,
+  or synchronize repositories unless explicitly requested by the user.
+
 - Write the tutorial in Polish unless the user requests another language.
 - Keep the tutorial source in Markdown and provide clear, reproducible steps.
 - Keep any example game code consistent with the tutorial.

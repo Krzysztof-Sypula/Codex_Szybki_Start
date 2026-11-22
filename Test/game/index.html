@@ -3,22 +3,67 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Saper — ćwiczenie z Codex</title>
+  <title>Saper — laboratorium logiki</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  <main>
-    <p class="eyebrow">LABORATORIUM LOGIKI / 01</p>
-    <h1>Saper<span>.</span></h1>
-    <p>81 pól. 10 min. Jeden spokojny ruch naraz.</p>
-    <div class="controls">
-      <button id="restart">Nowa gra</button>
-      <button id="flag-mode" aria-pressed="false">Tryb flagowania: nie</button>
-    </div>
-    <p id="status" role="status" aria-live="polite"></p>
-    <div id="board" aria-label="Plansza Sapera"></div>
-    <p class="hint">Kliknij, aby odkryć. Prawy przycisk stawia flagę.<br>Na telefonie użyj trybu flagowania.</p>
-  </main>
+  <div class="layout">
+    <aside aria-label="Ustawienia i pomoc">
+      <p class="eyebrow">TWOJA PLANSZA</p>
+      <h2>Ustawienia</h2>
+      <form id="settings">
+        <label for="size">Bok kwadratowej planszy (2–30)</label>
+        <input id="size" type="number" min="2" max="30" step="1" value="9" required>
+        <label for="mines">Liczba min</label>
+        <input id="mines" type="number" min="0" max="40" step="1" value="10" required aria-describedby="mine-limit">
+        <p id="mine-limit" class="hint">Od 0 do 40 min.</p>
+        <button id="standard" type="button">Standardowa liczba min</button>
+        <p class="hint">Nasz preset: około 12,3% pól (10/81), po zaokrągleniu. Dla 9 × 9: 10 min.</p>
+        <button type="submit" class="primary">Zastosuj i rozpocznij grę</button>
+        <p class="hint">Zastosowanie ustawień kasuje bieżącą rozgrywkę.</p>
+      </form>
+      <section>
+        <h2>Kolory i dźwięk</h2>
+        <label for="theme">Paleta kolorów</label>
+        <select id="theme">
+          <option value="sage">Szałwia i papier</option>
+          <option value="ocean">Morski błękit</option>
+          <option value="contrast">Wysoki kontrast</option>
+        </select>
+        <label for="volume">Głośność efektów</label>
+        <input id="volume" type="range" min="0" max="100" value="30">
+        <p class="hint">Dźwięk włączysz przy planszy. Efekty powstają lokalnie, bez pobierania plików.</p>
+      </section>
+      <section class="help">
+        <h2>Jak grać?</h2>
+        <p>Odkryj wszystkie pola bez min. Liczba mówi, ile min jest w ośmiu sąsiednich polach.</p>
+        <ul>
+          <li>Kliknięcie odkrywa pole.</li>
+          <li>Prawy przycisk stawia lub usuwa flagę.</li>
+          <li>Na telefonie włącz tryb flagowania.</li>
+          <li>Flaga oznacza podejrzenie miny i blokuje odkrycie pola.</li>
+          <li>Pierwsze odkrycie jest bezpieczne.</li>
+          <li>Bez min? Pierwsze odkrycie odsłoni całą planszę i wygrasz.</li>
+        </ul>
+        <p>Klawiatura: Tab wybiera pole, Enter lub Spacja wykonuje ruch. Do flag użyj trybu flagowania.</p>
+      </section>
+    </aside>
+    <main>
+      <p class="eyebrow">LABORATORIUM LOGIKI / 02</p>
+      <h1>Saper<span>.</span></h1>
+      <p id="summary"></p>
+      <div class="controls">
+        <button id="restart">Nowa gra</button>
+        <button id="flag-mode" aria-pressed="false">Tryb flagowania: nie</button>
+      </div>
+      <button id="sound" class="sound" aria-pressed="false">Dźwięk: wyłączony</button>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div class="board-scroll" tabindex="0" role="region" aria-label="Plansza; duże plansze można przewijać">
+        <div id="board" aria-label="Plansza Sapera"></div>
+      </div>
+      <p class="hint">Jeden spokojny ruch naraz. Dużą planszę możesz przewijać.</p>
+    </main>
+  </div>
 </body>
 </html>

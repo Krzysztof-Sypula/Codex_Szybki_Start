@@ -2,7 +2,7 @@
 title: "Saper z Codex"
 subtitle: "Od pierwszego promptu do plików gry"
 author: "NCAE_Saper"
-date: "22 listopada 2026 · Wersja 1.0"
+date: "22 listopada 2026 · Wersja 1.1"
 lang: pl-PL
 ---
 
@@ -21,6 +21,7 @@ ze sobą. Pełne sprawdzenie działania gry jest osobnym etapem.
 - 3. Sprawdzenie wyniku
 - 4. Uruchomienie i poprawki
 - 5. Powtarzanie ćwiczenia i dokumentacja
+- 6. Druga iteracja: panel ustawień i minihelp
 
 Spis przedstawia kolejność rozdziałów; nie zawiera numerów stron.
 
@@ -221,3 +222,63 @@ ale ich paginacja może się różnić.
 Raport rzeczywistego wykonania ćwiczenia znajduje się w
 `Tutorial/test-report.md`. Oddziela sprawdzone wyniki od kontroli,
 których jeszcze nie wykonano.
+
+# 6. Druga iteracja: panel ustawień i minihelp
+
+## Od działającej wersji do wygodniejszej gry
+
+Po pierwszej próbie mamy działającą grę. Kolejny prompt rozwija jej interfejs
+na podstawie doświadczeń użytkownika. Nie zastępuje pierwszego promptu
+z rozdziału 2: należy go wykonać dopiero na istniejących plikach gry.
+
+W tej iteracji użytkownik poprosił o panel po lewej stronie, ustawienia
+kwadratowej planszy i liczby min, kolory, opcjonalne dźwięki oraz minihelp.
+Zakres 2–30 pól na bok to przyjęte ograniczenie tej implementacji.
+„Standardowa” oznacza nasz preset około 12,3% pól (10/81), a nie uniwersalny
+wzór obowiązujący we wszystkich odmianach Sapera.
+
+## Drugi prompt do gry
+
+```text
+Rozbuduj istniejącą grę w Test/game. Zachowaj działającą logikę
+pierwszej wersji i zmodyfikuj jej pliki HTML, CSS i JavaScript.
+
+Dodaj po lewej panel ustawień i minihelp:
+- plansza zawsze kwadratowa, bok od 2 do 30 pól;
+- całkowita liczba min od 0 do floor(bok * bok / 2);
+- przycisk „Standardowa liczba min”: round(bok * bok * 10 / 81);
+- po zmianie rozmiaru uaktualnij limit min;
+- ustawienia planszy zastosuj przyciskiem rozpoczynającym nową grę;
+- dodaj wybór palety kolorów i regulację głośności;
+- przy planszy umieść duży przełącznik dźwięku;
+- dźwięk początkowo wyłączony, bez zewnętrznych plików i zależności;
+- minihelp ma wyjaśniać liczby, flagi, odkrywanie i warunek wygranej.
+
+Na małym ekranie umieść panel pod grą, a dużą planszę pozwól
+przewijać. Zmiana kolorów lub dźwięku nie może resetować gry.
+Zachowaj bezpieczne pierwsze odkrycie, tryb flagowania i blokadę
+ruchów po końcu gry. Przy zerowej liczbie min pierwsze odkrycie
+ma odsłonić całą planszę i zakończyć się wygraną.
+Sprawdź przypadki graniczne i podaj zakres wykonanych testów.
+```
+
+## Odbiór poprawki
+
+1. Sprawdź 2 × 2 z 0 i 2 minami oraz 30 × 30 z 0 i 450 minami.
+2. Dla 9 × 9 przycisk „Standardowa” powinien ustawić 10 min.
+3. Zmniejsz bok: limit min powinien się zmniejszyć, a za duża wartość
+   powinna zostać obniżona. Zatwierdź i sprawdź nową planszę.
+4. Spróbuj wpisać ujemną lub ułamkową liczbę min i rozmiar poza zakresem.
+   Formularz powinien uniemożliwić zatwierdzenie.
+5. W trakcie gry przełącz kolory: odkryte pola powinny pozostać odkryte.
+6. Włącz dźwięk dużym przyciskiem, zmień głośność, wykonaj ruch i wycisz.
+7. Na telefonie sprawdź flagowanie i przewijanie większej planszy.
+
+Do powtarzalnej kontroli logiki tej implementacji służy:
+
+```bash
+node Test/check-game.cjs
+```
+
+Ten test symuluje elementy strony. Nie zastępuje sprawdzenia wyglądu,
+natywnej walidacji formularza i odsłuchu w prawdziwej przeglądarce.

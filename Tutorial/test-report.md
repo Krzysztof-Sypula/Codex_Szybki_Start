@@ -32,3 +32,18 @@ Tekst PDF sprawdzono narzędziem pdftotext, a liczbę stron przez pdfinfo.
 Nie wykonano testów interakcji w prawdziwej przeglądarce ani oceny wizualnej
 PDF/ODT. Zasady gry i układ mobilny wymagają jeszcze kontroli ręcznej opisanej
 w rozdziale 4. Sukces tej próby nie oznacza pełnego odbioru funkcjonalnego gry.
+
+## Iteracja 2: ustawienia, minihelp i dźwięki (wersja 1.1)
+
+Dodano panel boczny, plansze 2–30, limit min do połowy pól, preset 10/81,
+trzy palety, minihelp i lokalne efekty Web Audio z głównym przełącznikiem.
+Pierwszy prompt poradnika pozostawiono bez zmian; drugi jest w rozdziale 6.
+
+Wykonano `node --check Test/game/script.js` i `node Test/check-game.cjs`.
+Test z symulacją DOM przeszedł dla boków 2, 9, 16 i 30 oraz liczby min
+0 i floor(bok²/2). Potwierdził wygraną przy 0 min, bezpieczny pierwszy
+ruch, blokadę po przegranej, flagowanie, preset 9×9 → 10 min, ograniczenie
+liczby min po zmniejszeniu planszy i przełączenie motywu.
+
+Nie wykonano odsłuchu, testu natywnej walidacji formularza ani wizualnego
+sprawdzenia interfejsu w przeglądarce. Test DOM nie potwierdza tych aspektów.
